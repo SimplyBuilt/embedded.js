@@ -7,7 +7,7 @@
     var listen = 'attachEvent' in win ? function (element, event, callback) {
         return element.attachEvent('on' + event, callback);
     } : function (element, event, callback) {
-        return element.addEventListener(event, callback);
+        return element.addEventListener(event, callback, false);
     };
 
     var id = undefined,
@@ -55,5 +55,5 @@
 
         // Start post height relay
         postHeight();
-    }, false);
+    });
 }(window || undefined);
