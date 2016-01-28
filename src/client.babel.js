@@ -31,7 +31,7 @@
         }, '*');
     }
 
-    listen(win, 'message', function(ev){
+    listen(win, 'message', (ev) => {
         if (ev.data == undefined || ev.data.id == undefined)
             return;
 
@@ -50,5 +50,5 @@
 
         // Start post height relay
         postHeight();
-    }, false);
+    });
 }(window || this);
