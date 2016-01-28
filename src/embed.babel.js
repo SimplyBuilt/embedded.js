@@ -8,7 +8,7 @@
 
     const listen = 'attachEvent' in win ?
         (element, event, callback) => element.attachEvent(`on${event}`, callback) :
-        (element, event, callback) => element.addEventListener(event, callback);
+        (element, event, callback) => element.addEventListener(event, callback, false);
 
     function beginRelay(iframe){
         iframe.contentWindow.postMessage({
