@@ -11,10 +11,10 @@ with our Embedded Widget feature!
 Embedded.js consist of 3 parts:
 
 1. The hook script which loads the embed script and acts as an anchor for
-   for where your content will be embedded within the page.
-2. The embed script which dynamically creates IFrames and communicates
-   with them in order to resize the IFrame element.
-3. The client script which is to be used in within the embedded content
+   where content will be embedded.
+2. The embed script which dynamically creates IFRAME elements and communicates
+   with them to determine the height.
+3. The client script which is used within the embedded content
    so it can communicate with the top-frame
 
 ## Quick Example
@@ -38,7 +38,7 @@ The `data-api` attribute specifies where to find the embed script. The
 hook will only ever load the embed script once so this hook script tag
 can be used multiple times within a page.
 
-The `data-location attribute tells Embedded.js what page to use for the
+The `data-location` attribute tells Embedded.js what page to use for the
 IFrame. It should point to the content you want to embed within your
 page.
 
