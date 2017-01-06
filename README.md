@@ -1,8 +1,10 @@
 # Embedded.js
 
-Embedded.js helps resize IFrames with content of dynamic height. It used
-by [SimplyBuilt](https://www.simplybuilt.com/) and works great with our
-Embedded Widget feature!
+Embedded.js makes it easy to create and share responsive embeddable content.
+The library will create IFRAMEs and help resize them automatically.
+
+It used by [SimplyBuilt](https://www.simplybuilt.com/) and works great
+with our Embedded Widget feature!
 
 ## Details
 
