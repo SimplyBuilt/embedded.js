@@ -34,25 +34,19 @@ First, we setup a script tag with the hook and a few data attributes:
 <script src="/js/hook.js" data-api="/js/embed.js" data-location="http://example.com/embeddable-content"></script>
 ```
 
-The `data-api` attribute specifies where to find the embed script. The
-hook will only ever load the embed script once so this hook script tag
-can be used multiple times within a page.
+The `data-api` attribute specifies where to find the embed script. 
+The `data-location` attribute specified the `src` attribute for the
+dynamically created `<iframe>`.
 
-The `data-location` attribute tells Embedded.js what page to use for the
-IFrame. It should point to the content you want to embed within your
-page.
-
-Now to communicate with the parent frame we only need to include the
-client script within the embedded page. For example:
+Next, include the client script within the embedded content like such:
 
 ```html
 <head>
-  <script src="/js/hook.js"></script>
+  <script src="/js/client.js"></script>
 </head>
 ```
 
-Now when IFrame will communiate with the parent document and resize the
-IFrame accordingly!
+Voilà! We can now embed responsive content with ease!
 
 ## CDN Hosting
 
