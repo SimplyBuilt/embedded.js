@@ -10,25 +10,33 @@
 
     function poll(){
         return win.setTimeout(function(){
-            if (passes++ > 60) // 15s to settle down
+            const newHeight = doc.body.scrollHeight;
+
+            if (passes++ > 60) // 15s to settle down (60 * 250msec)
                 return;
 
-            if (height != doc.body.scrollHeight)
-                return postHeight();
+            // Poll again and wait for height to settle down
+            if (height != newHeight) {
+                poll();
+                return;
+            }
+
+            // Height has now settled down
+            postHeight();
         }, 250);
     }
 
-    function postHeight(){
+    function startPoll(){
         if (timer != undefined)
             win.clearTimeout(timer);
 
         passes = 0;
         height = doc.body.scrollHeight;
         timer  = poll();
+    }
 
-        win.parent.postMessage({
-            id: id, height: height
-        }, '*');
+    function postHeight(){
+        win.parent.postMessage({ id, height }, '*');
     }
 
     listen(win, 'message', (ev) => {
@@ -37,7 +45,7 @@
 
         if (id == undefined){ // first message -- initialize observers
             if (MutationObserver != undefined){
-                let observer = new MutationObserver(postHeight);
+                let observer = new MutationObserver(startPoll);
 
                 observer.observe(doc, {
                     attributes: true, subtree: true, childList: true
@@ -49,6 +57,6 @@
         id = ev.data.id;
 
         // Start post height relay
-        postHeight();
+        startPoll();
     });
 }(window || this);

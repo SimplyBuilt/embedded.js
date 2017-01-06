@@ -1,12 +1,10 @@
 'use strict';
 
 !function (win) {
-    if ('Embeds' in win) // API can loaded more than once (but shouldn't be)
-        return Embeds.scan();
-
     var doc = win.document;
-    var Embeds = win.Embeds = [];
-    var IFrames = Embeds.IFrames = [];
+
+    var Embeds = [];
+    var IFrames = [];
 
     var listen = 'attachEvent' in win ? function (element, event, callback) {
         return element.attachEvent('on' + event, callback);
@@ -15,28 +13,31 @@
     };
 
     function beginRelay(iframe) {
-        iframe.contentWindow.postMessage({
-            id: iframe.id
-        }, '*');
+        iframe.height = undefined;
+
+        win.setTimeout(function () {
+            iframe.contentWindow.postMessage({
+                id: iframe.id
+            }, '*');
+        }, 1);
     }
 
     function onMessage(ev) {
         var data = ev.data;
 
-        if (ev.data.id == undefined || ev.data.height == undefined) return;
 
-        if (!/^embedjs-/.test(ev.data.id)) return;
+        if (data.id == undefined || data.height == undefined) return;
+
+        if (!/^embedjs-/.test(data.id)) return;
 
         var iframe = IFrames.filter(function (element) {
-            if (element.id == ev.data.id) return element;
+            if (element.id == data.id) return element;
         }).pop();
 
-        if (iframe != undefined) {
-            iframe.height = data.height;
-        }
+        if (iframe != undefined) iframe.height = data.height;
     }
 
-    Embeds.scan = function () {
+    function onLoad() {
         Array.from(doc.querySelectorAll('script[data-location]')).forEach(function (scriptEmbed) {
             if (Embeds.indexOf(scriptEmbed) > -1) return;
 
@@ -53,12 +54,42 @@
             scriptEmbed.parentElement.insertBefore(iframe, scriptEmbed);
 
             listen(iframe, 'load', function () {
-                beginRelay(iframe);
+                return beginRelay(iframe);
             });
         });
-    };
+    }
+
+    var onResize = function () {
+        var timer = void 0;
+
+        return function () {
+            win.clearTimeout(timer);
+
+            timer = win.setTimeout(function () {
+                IFrames.forEach(beginRelay);
+            }, 250);
+        };
+    }();
 
     listen(win, 'message', onMessage);
+    listen(win, 'resize', onResize);
+    listen(win, 'orientationchange', onResize);
 
-    if ('readyState' in doc) listen(doc, 'readystatechange', Embeds.scan);else listen(win, 'load', Embeds.scan);
+    if ('readyState' in doc) {
+        (function () {
+            var loaded = false;
+
+            listen(doc, 'readystatechange', function () {
+                if (loaded) return;
+
+                if (doc.readyState == 'interactive' || doc.readyState == 'complete') {
+                    loaded = true;
+
+                    onLoad();
+                }
+            });
+        })();
+    } else {
+        listen(win, 'load', onLoad);
+    }
 }(window || undefined);

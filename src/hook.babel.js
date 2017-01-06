@@ -1,13 +1,13 @@
 !function(win){
-    let doc  = win.document;
+    const doc = win.document;
 
     if (doc.querySelector('script#embedjs') == null){
-        let script = doc.createElement('script');
+        const script = doc.createElement('script');
 
-        let apiMeta   = doc.querySelector('meta[name="embedjs-api"]');
-        let apiScript = doc.querySelector('script[data-api]');
+        const apiMeta   = doc.querySelector('meta[name="embedjs-api"]');
+        const apiScript = doc.querySelector('script[data-api]');
 
-        let src = apiMeta != null ?
+        const src = apiMeta != null ?
             apiMeta.content : apiScript != null ?
             apiScript.dataset.api : null;
 
