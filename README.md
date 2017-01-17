@@ -3,7 +3,7 @@
 Embedded.js makes it easy to create and share responsive embeddable content.
 The library will create IFRAMEs and help resize them automatically.
 
-It used by [SimplyBuilt](https://www.simplybuilt.com/) and works great
+It is used by [SimplyBuilt](https://www.simplybuilt.com/) and works great
 with our Embedded Widget feature!
 
 ## Details
@@ -19,26 +19,26 @@ Embedded.js consist of 3 parts:
 
 ## Quick Example
 
-Suppose to we have some web content we want to be embeddable across the
-web. The usually recipe for this is to embed the content through an IFrame.
+Suppose we have some web content we want to be embeddable across the
+web. The usual recipe for this is to embed the content through an IFrame.
 
 Since this content may be consumed on a variety of devices, it needs to
 be responsive and potentially variable in height. In order for embedding
 to work well, the IFrame in the top document needs to be able to
-dynamically resize itself to height of the content. To achieve this we can
+dynamically resize itself to the height of the content. To achieve this we can
 use Embedded.js!
 
-First, we setup a script tag with the hook and a few data attributes:
+First, we set up a script tag with the hook and a few data attributes:
 
 ```html
 <script src="/js/hook.js" data-api="/js/embed.js" data-location="http://example.com/embeddable-content"></script>
 ```
 
 The `data-api` attribute specifies where to find the embed script. 
-The `data-location` attribute specified the `src` attribute for the
+The `data-location` attribute specifies the `src` attribute for the
 dynamically created `<iframe>`.
 
-Next, include the client script within the embedded content like such:
+Next, include the client script within the embedded content like so:
 
 ```html
 <head>
